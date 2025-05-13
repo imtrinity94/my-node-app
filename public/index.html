@@ -6,148 +6,238 @@
     <title>Curl to vRO Converter</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@cds/core/global.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@cds/core/styles/module.shims.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@cds/city/css/bundles/default.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #4a90e2;
-            --secondary-color: #2c3e50;
-            --accent-color: #e74c3c;
+            --primary-color: var(--cds-global-color-blue-600);
+            --secondary-color: var(--cds-global-color-gray-900);
+            --accent-color: var(--cds-global-color-red-700);
         }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Metropolis', var(--cds-global-typography-font-family);
+            background-color: var(--cds-global-color-gray-50);
             color: var(--secondary-color);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        .top-nav {
+            background-color: #0f1924;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .nav-links a:hover {
+            opacity: 1;
         }
         .hero-section {
-            background: linear-gradient(135deg, var(--primary-color), #2980b9);
+            background: var(--cds-global-color-blue-900);
             color: white;
-            padding: 4rem 0;
-            margin-bottom: 3rem;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
         }
         .hero-title {
-            font-size: 2.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
         }
         .hero-subtitle {
-            font-size: 1.2rem;
+            font-size: 1rem;
             opacity: 0.9;
         }
+        .main-content {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .content-left {
+            flex: 0 0 80%;
+            max-width: 80%;
+        }
+        
+        .content-right {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+        
         .feature-card {
             background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: var(--cds-global-space-8);
+            padding: var(--cds-global-space-8);
+            margin-bottom: var(--cds-global-space-8);
+            box-shadow: var(--cds-alias-object-shadow-100);
             transition: transform 0.3s ease;
         }
+        
         .feature-card:hover {
             transform: translateY(-5px);
         }
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
+        
+        .feature-list {
+            position: sticky;
+            top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .content-left, .content-right {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
         }
         pre {
             max-height: 500px;
             overflow-y: auto;
-            background: #1e1e1e !important;
-            border-radius: 10px;
-            padding: 1.5rem !important;
-            margin: 1.5rem 0;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-        
-        code[class*="language-"] {
-            text-shadow: none !important;
-            background: none !important;
-            font-family: 'Consolas', 'Monaco', 'Andale Mono', monospace;
-            font-size: 14px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-            word-break: break-all;
-            word-wrap: break-word;
-        }
-        .container {
-            max-width: 1200px;
+            background: var(--cds-global-color-gray-1000) !important;
+            border-radius: var(--cds-global-space-8);
+            padding: var(--cds-global-space-8) !important;
+            margin: var(--cds-global-space-8) 0;
+            box-shadow: var(--cds-alias-object-shadow-100);
         }
         .btn-primary {
-            background-color: var(--primary-color);
+            background-color: var(--cds-global-color-blue-700);
             border: none;
-            padding: 0.75rem 2rem;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            padding: var(--cds-global-space-6) var(--cds-global-space-8);
+            font-weight: var(--cds-global-typography-font-weight-semibold);
         }
         .btn-primary:hover {
-            background-color: #357abd;
-            transform: translateY(-2px);
+            background-color: var(--cds-global-color-blue-800);
         }
         .form-control {
-            border-radius: 8px;
-            padding: 1rem;
-            border: 2px solid #e9ecef;
-            transition: border-color 0.3s ease;
+            border-radius: var(--cds-global-space-4);
+            padding: var(--cds-global-space-6);
+            border: 2px solid var(--cds-global-color-gray-200);
         }
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+        .documentation-links {
+            background: var(--cds-global-color-gray-100);
+            padding: var(--cds-global-space-8);
+            border-radius: var(--cds-global-space-4);
+            margin: 2rem 0;
+        }
+        .documentation-links h3 {
+            color: var(--cds-global-color-blue-800);
+            margin-bottom: var(--cds-global-space-6);
+        }
+        .documentation-links a {
+            color: var(--cds-global-color-blue-700);
+            text-decoration: none;
+            display: block;
+            margin-bottom: var(--cds-global-space-4);
+        }
+        .documentation-links a:hover {
+            color: var(--cds-global-color-blue-900);
+            text-decoration: underline;
+        }
+d        .main-subtitle {
+            margin-top: 10px;
+            margin-bottom: 1rem;
+            font-size: large;
+            align-self: center;
+            text-align: center;
+            color: var(--secondary-color);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 400;
         }
     </style>
 </head>
 <body>
-    <div class="hero-section">
+    <nav class="top-nav">
         <div class="container">
-            <h1 class="hero-title">Curl to vRO Converter</h1>
-            <p class="hero-subtitle">Transform complex cURL commands into clean, ready-to-use VMware vRealize Orchestrator JavaScript code</p>
+            <div class="nav-brand">
+                <h1 style="color: white; font-size: 1.25rem; margin: 0;">curl2vRO</h1>
+            </div>
+            <div class="nav-links">
+                <a href="https://github.com/imtrinity94/curl2vro" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.npmjs.com/package/curl2vro" target="_blank"><i class="fab fa-npm"></i></a>
+                <a href="https://cloudblogger.co.in/2025/05/05/curl2vro-effortlessly-convert-curl-commands-to-orchestrator-javascript-code/" target="_blank"><i class="fas fa-book"></i></a>
+            </div>
         </div>
-    </div>
+    </nav>
 
     <div class="container">
-        <div class="row mb-5">
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">🚀</div>
-                    <h3>Easy Conversion</h3>
-                    <p>Transform complex cURL commands into clean vRO JavaScript instantly</p>
+        <p class="main-subtitle" style="margin-top: 20px; font-size: x-large;">Transform complex cURL commands into clean, ready-to-use VMware vRealize Orchestrator JavaScript code</p>
+        
+        <div class="main-content">
+            <div class="content-left">
+                <div class="conversion-section bg-white p-4 rounded-3 shadow-sm">
+                    <h2 class="mb-4">Try It Now</h2>
+                    <div class="mb-3">
+                        <label for="curlCommand" class="form-label">Enter your curl command:</label>
+                        <textarea class="form-control" id="curlCommand" rows="5" placeholder="Enter your curl command here... e.g., curl -X GET https://api.example.com/data"></textarea>
+                    </div>
+                    <button class="btn btn-primary mb-4" onclick="convertCommand()">Convert to vRO</button>
+                    
+                    <div id="result" style="display: none;">
+                        <h3>Generated vRO Code:</h3>
+                        <pre><code class="language-javascript" id="vroCode"></code></pre>
+                    </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">🔒</div>
-                    <h3>Header Support</h3>
-                    <p>Automatically handles all headers from your cURL commands</p>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="feature-card">
-                    <div class="feature-icon">⚡</div>
-                    <h3>Production Ready</h3>
-                    <p>Generates code that works right away in your vRO workflows</p>
-                </div>
-            </div>
-        </div>
 
-        <div class="conversion-section bg-white p-4 rounded-3 shadow-sm">
-            <h2 class="mb-4">Try It Now</h2>
-            <div class="mb-3">
-                <label for="curlCommand" class="form-label">Enter your curl command:</label>
-                <textarea class="form-control" id="curlCommand" rows="5" placeholder="Enter your curl command here... e.g., curl -X GET https://api.example.com/data"></textarea>
+                <div class="documentation-links">
+                    <h3>Documentation & Resources</h3>
+                    <a href="https://github.com/imtrinity94/curl2vro" target="_blank" rel="noopener">
+                        <i class="fab fa-github"></i> GitHub Repository
+                    </a>
+                    <a href="https://www.npmjs.com/package/curl2vro" target="_blank" rel="noopener">
+                        <i class="fab fa-npm"></i> Official NPM Package Documentation
+                    </a>
+                    <a href="https://cloudblogger.co.in/2025/05/05/curl2vro-effortlessly-convert-curl-commands-to-orchestrator-javascript-code/" target="_blank" rel="noopener">
+                        <i class="fas fa-book"></i> Detailed Tutorial & Usage Guide
+                    </a>
+                    <p class="mt-3 text-muted">Learn more about using curl2vRO in your vRealize Orchestrator workflows</p>
+                </div>
             </div>
-            <button class="btn btn-primary mb-4" onclick="convertCommand()">Convert to vRO</button>
             
-            <div id="result" style="display: none;">
-                <h3>Generated vRO Code:</h3>
-                <pre><code class="language-javascript" id="vroCode"></code></pre>
+            <div class="content-right">
+                <div class="feature-list">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Easy Conversion</h3>
+                        <p>Transform complex cURL commands into clean vRO JavaScript instantly</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Header Support</h3>
+                        <p>Automatically handles all headers from your cURL commands</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Production Ready</h3>
+                        <p>Generates code that works right away in your vRO workflows</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
     <footer class="bg-light mt-5 py-4">
         <div class="container text-center">
-            <p class="mb-0">Made with ❤️ for vRealize Orchestrator developers</p>
+            <p class="mb-0">Made with ❤️ for Aria Automation Orchestrator developers</p>
         </div>
     </footer>
 
@@ -173,37 +263,27 @@
                     body: JSON.stringify({ curlCommand: curlCommand })
                 });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
                 const data = await response.json();
                 
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
                 if (data.result) {
-                    // Clear previous content and result div
-                    resultDiv.style.display = 'none';
-                    codeElement.textContent = '';
+                    // Clear previous content
+                    codeElement.textContent = data.result;
                     
-                    // Format the code with proper indentation
-                    const formattedCode = data.result
-                        .split('\n')
-                        .map(line => line.trim())
-                        .join('\n');
-                    
-                    // Set new content
-                    codeElement.textContent = formattedCode;
-                    
-                    // Show result and highlight
+                    // Show the result div first
                     resultDiv.style.display = 'block';
+                    
+                    // Force Prism to highlight the code
                     Prism.highlightElement(codeElement);
-                } else if (data.error) {
-                    alert('Error: ' + data.error);
                 } else {
                     alert('Unexpected response format');
                 }
             } catch (error) {
-                console.error('Error:', error);
-                alert('Error converting command: ' + error.message);
+                alert('Error: ' + (error.message || 'Failed to convert curl command'));
             }
         }
     </script>
