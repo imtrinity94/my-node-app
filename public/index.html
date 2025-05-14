@@ -79,7 +79,6 @@
             flex: 0 0 20%;
             max-width: 20%;
         }
-        
         .feature-card {
             background: white;
             border-radius: var(--cds-global-space-8);
@@ -87,6 +86,30 @@
             margin-bottom: var(--cds-global-space-8);
             box-shadow: var(--cds-alias-object-shadow-100);
             transition: transform 0.3s ease;
+            height: auto;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--cds-global-color-blue-800);
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--cds-global-color-gray-700);
+            line-height: 1.4;
         }
         
         .feature-card:hover {
@@ -106,6 +129,24 @@
                 flex: 0 0 100%;
                 max-width: 100%;
             }
+            .feature-list {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+            .feature-card {
+                flex: 0 0 calc(33.33% - 1rem);
+                min-width: 250px;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .feature-card {
+                flex: 0 0 100%;
+            }
         }
         pre {
             max-height: 500px;
@@ -115,6 +156,25 @@
             padding: var(--cds-global-space-8) !important;
             margin: var(--cds-global-space-8) 0;
             box-shadow: var(--cds-alias-object-shadow-100);
+            position: relative;
+        }
+        
+        pre code {
+            display: block;
+            padding-top: 1rem;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--cds-global-color-gray-500);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s ease;
+            z-index: 1;
         }
         .btn-primary {
             background-color: var(--cds-global-color-blue-700);
@@ -129,6 +189,23 @@
             border-radius: var(--cds-global-space-4);
             padding: var(--cds-global-space-6);
             border: 2px solid var(--cds-global-color-gray-200);
+            font-size: 14px;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--cds-global-color-gray-500);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+        
+        .copy-button:hover {
+            color: var(--cds-global-color-blue-700);
         }
         .documentation-links {
             background: var(--cds-global-color-gray-100);
@@ -194,7 +271,12 @@ d        .main-subtitle {
                     
                     <div id="result" style="display: none;">
                         <h3>Generated vRO Code:</h3>
-                        <pre><code class="language-javascript" id="vroCode"></code></pre>
+                        <pre>
+                            <button class="copy-button" onclick="copyCode()" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <code class="language-javascript" id="vroCode"></code>
+                        </pre>
                     </div>
                 </div>
 
@@ -237,13 +319,33 @@ d        .main-subtitle {
 
     <footer class="bg-light mt-5 py-4">
         <div class="container text-center">
-            <p class="mb-0">Made with ❤️ for Aria Automation Orchestrator developers</p>
+            <p class="mb-0">Made with ❤️ for vRealize Orchestrator developers</p>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
     <script>
+        function copyCode() {
+            const codeElement = document.getElementById('vroCode');
+            const textToCopy = codeElement.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyButton = document.querySelector('.copy-button');
+                const originalIcon = copyButton.innerHTML;
+                
+                // Change to check icon temporarily
+                copyButton.innerHTML = '<i class="fas fa-check"></i>';
+                
+                // Revert back to copy icon after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+        
         async function convertCommand() {
             const curlCommand = document.getElementById('curlCommand').value;
             const resultDiv = document.getElementById('result');
