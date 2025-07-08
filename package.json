@@ -1,6 +1,6 @@
 {
   "name": "curl2vro-web",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Web interface for converting curl commands to VMware vRealize Orchestrator (vRO) JavaScript code",
   "main": "server.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "curl2vro": "^2.0.0",
+    "curl2vro": "^2.0.1",
     "express": "^4.18.2",
     "require-rewrite": "^1.0.2"
   },
