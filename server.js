@@ -1,13 +1,20 @@
 const express = require('express');
 const path = require('path');
-const { convertCurlToVRO } = require('curl2vro');  // Changed from './curl2vRO' to 'curl2vro'
+const { convertCurlToVRO } = require('curl2vro');
 const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
 
+// Enable CORS for Vercel deployment
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+});
+
 // Serve static files from the public directory
-app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // POST endpoint to convert curl commands
 app.post('/api/convert', (req, res) => {
