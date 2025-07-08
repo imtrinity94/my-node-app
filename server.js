@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(express.static('public'));
 
 // POST endpoint to convert curl commands
-app.post('/convert', (req, res) => {
+app.post('/api/convert', (req, res) => {
     try {
         const curlCommand = req.body.curlCommand;
         if (!curlCommand) {
