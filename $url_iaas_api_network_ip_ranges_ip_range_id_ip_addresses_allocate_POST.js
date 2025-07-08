@@ -28,10 +28,10 @@ request.setHeader("Content-Type", "application/json");
 // Set JSON request body
 request.contentType = "application/json";
 request.content = JSON.stringify({
-  "description": "Allocate ipv6 addresses for QA test machines",
+  "description": "Allocate ipv4 addresses for QA test machines",
   "ipAddresses": [
-    "fe45:10:118:136:fcd8:d68d:9701:8975",
-    "fe45:10:118:136:fcd8:d68d:9701:8985"
+    "196.192.2.19",
+    "196.192.2.20"
   ]
 });
 
@@ -70,7 +70,7 @@ curl --location --request POST \
   -H "Authorization: Bearer $access_token" \
   -H 'Content-Type: application/json' \
   -d '{
-     "description":"Allocate ipv6 addresses for QA test machines",
-     "ipAddresses":["fe45:10:118:136:fcd8:d68d:9701:8975","fe45:10:118:136:fcd8:d68d:9701:8985"]
+     "description":"Allocate ipv4 addresses for QA test machines",
+     "ipAddresses":["196.192.2.19", "196.192.2.20"]
 }'
 */

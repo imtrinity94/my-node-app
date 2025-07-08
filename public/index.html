@@ -378,13 +378,20 @@ d        .main-subtitle {
             }
 
             try {
-                const response = await fetch('/convert', {
+                const apiUrl = window.location.origin + '/convert';
+                const response = await fetch(apiUrl, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ curlCommand: curlCommand })
+                    body: JSON.stringify({ curlCommand: curlCommand }),
+                    credentials: 'same-origin'
                 });
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => ({}));
+                    throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
+                }
 
                 const data = await response.json();
                 
