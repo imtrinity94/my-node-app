@@ -4,54 +4,406 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curl to vRO Converter</title>
+    <div class="ribbon">Improved</div>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/prism-themes@1.9.0/themes/prism-vsc-dark-plus.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/@cds/core/global.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@cds/core/styles/module.shims.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@cds/city/css/bundles/default.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Metropolis:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        pre { max-height: 500px; overflow-y: auto; }
-        .container { max-width: 1200px; }
+        :root {
+            --primary-color: var(--cds-global-color-blue-600);
+            --secondary-color: var(--cds-global-color-gray-900);
+            --accent-color: var(--cds-global-color-red-700);
+        }
+        body {
+            font-family: 'Metropolis', var(--cds-global-typography-font-family);
+            background-color: var(--cds-global-color-gray-50);
+            color: var(--secondary-color);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        /* Improved Ribbon */
+        .ribbon {
+            position: fixed;
+            top: 25px;
+            right: -50px;
+            z-index: 1000;
+            background: var(--accent-color);
+            color: white;
+            padding: 5px 50px;
+            transform: rotate(45deg);
+            font-weight: 600;
+            font-size: 14px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .top-nav {
+            background-color: #0f1924;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .top-nav .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .nav-links a:hover {
+            opacity: 1;
+        }
+        .hero-section {
+            background: var(--cds-global-color-blue-900);
+            color: white;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+        .hero-title {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+        .hero-subtitle {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+        .main-content {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .content-left {
+            flex: 0 0 80%;
+            max-width: 80%;
+        }
+        
+        .content-right {
+            flex: 0 0 20%;
+            max-width: 20%;
+        }
+        .feature-card {
+            background: white;
+            border-radius: var(--cds-global-space-8);
+            padding: var(--cds-global-space-8);
+            margin-bottom: var(--cds-global-space-8);
+            box-shadow: var(--cds-alias-object-shadow-100);
+            transition: transform 0.3s ease;
+            height: auto;
+            min-height: 160px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        
+        .feature-icon {
+            font-size: 20px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--cds-global-color-blue-800);
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            margin: 0;
+            font-size: 0.85rem;
+            color: var(--cds-global-color-gray-700);
+            line-height: 1.4;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-list {
+            position: sticky;
+            top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .content-left, .content-right {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            .feature-list {
+                position: static;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+                justify-content: center;
+            }
+            .feature-card {
+                flex: 0 0 calc(33.33% - 1rem);
+                min-width: 250px;
+                margin-bottom: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .feature-card {
+                flex: 0 0 100%;
+            }
+        }
+        pre {
+            max-height: 500px;
+            overflow-y: auto;
+            background: var(--cds-global-color-gray-1000) !important;
+            border-radius: var(--cds-global-space-8);
+            padding: var(--cds-global-space-8) !important;
+            margin: var(--cds-global-space-8) 0;
+            box-shadow: var(--cds-alias-object-shadow-100);
+            position: relative;
+        }
+        
+        pre code {
+            display: block;
+            padding-top: 1rem;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--cds-global-color-gray-500);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s ease;
+            z-index: 1;
+        }
+        .btn-primary {
+            background-color: var(--cds-global-color-blue-700);
+            border: none;
+            padding: var(--cds-global-space-6) var(--cds-global-space-8);
+            font-weight: var(--cds-global-typography-font-weight-semibold);
+        }
+        .btn-primary:hover {
+            background-color: var(--cds-global-color-blue-800);
+        }
+        .form-control {
+            border-radius: var(--cds-global-space-4);
+            padding: var(--cds-global-space-6);
+            border: 2px solid var(--cds-global-color-gray-200);
+            font-size: 14px;
+        }
+        
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            color: var(--cds-global-color-gray-500);
+            cursor: pointer;
+            padding: 5px;
+            transition: color 0.2s ease;
+        }
+        
+        .copy-button:hover {
+            color: var(--cds-global-color-blue-700);
+        }
+        .documentation-links {
+            background: var(--cds-global-color-gray-100);
+            padding: var(--cds-global-space-8);
+            border-radius: var(--cds-global-space-4);
+            margin: 2rem 0;
+        }
+        .documentation-links h3 {
+            color: var(--cds-global-color-blue-800);
+            margin-bottom: var(--cds-global-space-6);
+        }
+        .documentation-links a {
+            color: var(--cds-global-color-blue-700);
+            text-decoration: none;
+            display: block;
+            margin-bottom: var(--cds-global-space-4);
+        }
+        .documentation-links a:hover {
+            color: var(--cds-global-color-blue-900);
+            text-decoration: underline;
+        }
+d        .main-subtitle {
+            margin-top: 10px;
+            margin-bottom: 1rem;
+            font-size: large;
+            align-self: center;
+            text-align: center;
+            color: var(--secondary-color);
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.6;
+            font-weight: 400;
+        }
     </style>
 </head>
 <body>
-    <div class="container my-5">
-        <h1 class="mb-4">Curl to vRO Converter</h1>
-        <div class="mb-3">
-            <label for="curlCommand" class="form-label">Enter your curl command:</label>
-            <textarea class="form-control" id="curlCommand" rows="5" placeholder="Enter your curl command here..."></textarea>
+    <nav class="top-nav">
+        <div class="container">
+            <div class="nav-brand">
+                <h1 style="color: white; font-size: 1.25rem; margin: 0;">curl2vRO <span style="font-size: 0.7rem; opacity: 0.7;">v2.0.0</span></h1>
+            </div>
+            <div class="nav-links">
+                <a href="https://github.com/imtrinity94/curl2vro" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.npmjs.com/package/curl2vro" target="_blank"><i class="fab fa-npm"></i></a>
+                <a href="https://cloudblogger.co.in/2025/05/05/curl2vro-effortlessly-convert-curl-commands-to-orchestrator-javascript-code/" target="_blank"><i class="fas fa-book"></i></a>
+            </div>
         </div>
-        <button class="btn btn-primary mb-4" onclick="convertCommand()">Convert</button>
+    </nav>
+
+    <div class="container">
+        <p class="main-subtitle" style="margin-top: 20px; font-size: x-large;">Transform complex cURL commands into clean, ready-to-use VMware vRealize Orchestrator JavaScript code</p>
         
-        <div id="result" style="display: none;">
-            <h3>Generated vRO Code:</h3>
-            <pre><code class="language-javascript" id="vroCode"></code></pre>
+        <div class="main-content">
+            <div class="content-left">
+                <div class="conversion-section bg-white p-4 rounded-3 shadow-sm">
+                    <h2 class="mb-4">Try It Now</h2>
+                    <div class="mb-3">
+                        <label for="curlCommand" class="form-label">Enter your curl command:</label>
+                        <textarea class="form-control" id="curlCommand" rows="5" placeholder="Enter your curl command here... e.g., curl -X GET https://api.example.com/data"></textarea>
+                    </div>
+                    <button class="btn btn-primary mb-4" onclick="convertCommand()">Convert to vRO</button>
+                    
+                    <div id="result" style="display: none;">
+                        <h3>Generated vRO Code:</h3>
+                        <pre>
+                            <button class="copy-button" onclick="copyCode()" title="Copy to clipboard">
+                                <i class="fas fa-copy"></i>
+                            </button>
+                            <code class="language-javascript" id="vroCode"></code>
+                        </pre>
+                    </div>
+                </div>
+
+                <div class="documentation-links">
+                    <h3>Documentation & Resources</h3>
+                    <a href="https://github.com/imtrinity94/curl2vro" target="_blank" rel="noopener">
+                        <i class="fab fa-github"></i> GitHub Repository
+                    </a>
+                    <a href="https://www.npmjs.com/package/curl2vro" target="_blank" rel="noopener">
+                        <i class="fab fa-npm"></i> Official NPM Package Documentation
+                    </a>
+                    <a href="https://cloudblogger.co.in/2025/05/05/curl2vro-effortlessly-convert-curl-commands-to-orchestrator-javascript-code/" target="_blank" rel="noopener">
+                        <i class="fas fa-book"></i> Detailed Tutorial & Usage Guide
+                    </a>
+                    <p class="mt-3 text-muted">Learn more about using curl2vRO in your vRealize Orchestrator workflows</p>
+                </div>
+            </div>
+            
+            <div class="content-right">
+                <div class="feature-list">
+                    <div class="feature-card">
+                        <div class="feature-icon">🚀</div>
+                        <h3>Easy Conversion</h3>
+                        <p>Transform complex cURL commands into clean vRO JavaScript instantly</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔒</div>
+                        <h3>Header Support</h3>
+                        <p>Automatically handles all headers from your cURL commands</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>Production Ready</h3>
+                        <p>Generates code that works right away in your vRO workflows</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <footer class="bg-light mt-5 py-4">
+        <div class="container text-center">
+            <p class="mb-0">Made with ❤️ for vRealize Orchestrator developers</p>
+        </div>
+    </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
     <script>
+        function copyCode() {
+            const codeElement = document.getElementById('vroCode');
+            const textToCopy = codeElement.textContent;
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const copyButton = document.querySelector('.copy-button');
+                const originalIcon = copyButton.innerHTML;
+                
+                // Change to check icon temporarily
+                copyButton.innerHTML = '<i class="fas fa-check"></i>';
+                
+                // Revert back to copy icon after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = originalIcon;
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy text: ', err);
+            });
+        }
+        
         async function convertCommand() {
             const curlCommand = document.getElementById('curlCommand').value;
             const resultDiv = document.getElementById('result');
             const codeElement = document.getElementById('vroCode');
 
+            if (!curlCommand.trim()) {
+                alert('Please enter a curl command');
+                return;
+            }
+
             try {
                 const response = await fetch('/convert', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ curlCommand })
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ curlCommand: curlCommand })
                 });
 
                 const data = await response.json();
                 
-                if (data.result) {  // Changed from data.success to data.result
-                    codeElement.textContent = data.result;  // Changed from data.code to data.result
-                    Prism.highlightElement(codeElement);
+                if (data.error) {
+                    alert(data.error);
+                    return;
+                }
+                
+                if (data.result) {
+                    // Clear previous content
+                    codeElement.textContent = data.result;
+                    
+                    // Show the result div first
                     resultDiv.style.display = 'block';
+                    
+                    // Force Prism to highlight the code
+                    Prism.highlightElement(codeElement);
                 } else {
-                    alert('Error: ' + (data.error || 'Unknown error'));
+                    alert('Unexpected response format');
                 }
             } catch (error) {
-                alert('Error converting command: ' + error.message);
+                alert('Error: ' + (error.message || 'Failed to convert curl command'));
             }
         }
     </script>

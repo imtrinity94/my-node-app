@@ -1,6 +1,6 @@
 {
   "name": "curl2vro",
-  "version": "1.0.5",
+  "version": "2.0.0",
   "description": "A utility to convert curl commands to VMware vRealize Orchestrator (vRO) JavaScript code",
   "main": "curl2vRO.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "curl2vro": "^1.0.5",
+    "curl2vro": "^2.0.0",
     "express": "^4.17.1"
   },
   "keywords": [
