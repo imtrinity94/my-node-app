@@ -1,0 +1,12 @@
+# Exported from Render on 2025-05-13T13:52:48Z
+services:
+- type: web
+  name: curl2vro
+  runtime: docker
+  repo: https://github.com/imtrinity94/my-node-app
+  plan: free
+  region: oregon
+  dockerContext: .
+  dockerfilePath: ./Dockerfile
+  autoDeployTrigger: commit
+version: "1"
